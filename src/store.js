@@ -8,16 +8,29 @@ export default new Vuex.Store({
     dataList: []
   },
   mutations: {
-
+    getDataList (state, moreDatas) {
+      state.dataList = state.dataList.concat(moreDatas)
+    }
   },
   getters: {
-    getAverage: state => 0,
+    getAverage: state => {
+      if (state.dataList.length === 0) {
+        return 0
+      }
+      var sum = 0
+      state.dataList.forEach(item => {
+        sum = sum + item.data
+      })
+      return (sum / state.dataList.length).toFixed(2)
+    },
     getData: state => state.dataList
   },
   actions: {
-    getDataCall (context) {
+    getDataCall (context, dataInfor) {
       // TODO
-      mockGenerator()
+      mockGenerator(dataInfor.startIndex, dataInfor.count).then(data => {
+        context.commit('getDataList', data)
+      })
     }
   }
 })

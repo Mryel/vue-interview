@@ -18,17 +18,21 @@ export default {
   name: 'test',
   data () {
     return {
-      dataList: [],
-      average: ''
+      // dataList: [],
+      // average: ''
     }
   },
   computed: {
-
+    dataList () {
+      return this.$store.getters.getData
+    },
+    average () {
+      return this.$store.getters.getAverage
+    }
   },
   methods: {
-
     update () {
-
+      this.$store.dispatch('getDataCall', { startIndex: this.dataList.length, count: this.dataList.length + 10 })
     }
   }
 }
@@ -41,6 +45,9 @@ export default {
   .list{
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
+    height: 50px;
+    align-items: center;
   }
   button{
     margin-top: 10px;

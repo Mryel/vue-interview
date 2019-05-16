@@ -9,17 +9,23 @@
       <div>{{item.data}}</div>
       <div>{{item.time}}</div>
     </div>
+    <transition name="fade">
+      <NoData v-if="show" />
+    </transition>
   </div>
 </template>
 
 <script>
-
+import NoData from './NoData'
+import { setTimeout } from 'timers'
 export default {
   name: 'test',
+  components: { NoData },
   data () {
     return {
       // dataList: [],
       // average: ''
+      show: false
     }
   },
   computed: {
@@ -32,7 +38,24 @@ export default {
   },
   methods: {
     update () {
-      this.$store.dispatch('getDataCall', { startIndex: this.dataList.length, count: this.dataList.length + 10 })
+      var that = this
+      if (this.$store.state.hasMoreData) {
+        var count = Math.floor(Math.random() * 3)
+        if (count === 0) {
+          this.$store.dispatch('noData')
+          this.show = true
+          setTimeout(function () {
+            that.show = false
+          }, 3000)
+        } else {
+          this.$store.dispatch('getDataCall', { startIndex: this.dataList.length, count: this.dataList.length + count })
+        }
+      } else {
+        this.show = true
+        setTimeout(function () {
+          that.show = false
+        }, 3000)
+      }
     }
   }
 }
@@ -58,6 +81,12 @@ export default {
     color: white;
     width: 100%;
   }
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 
 </style>

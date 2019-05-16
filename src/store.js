@@ -5,11 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    dataList: []
+    dataList: [],
+    hasMoreData: true
   },
   mutations: {
     getDataList (state, moreDatas) {
       state.dataList = state.dataList.concat(moreDatas)
+    },
+    noMoreData (state) {
+      state.hasMoreData = false
     }
   },
   getters: {
@@ -31,6 +35,9 @@ export default new Vuex.Store({
       mockGenerator(dataInfor.startIndex, dataInfor.count).then(data => {
         context.commit('getDataList', data)
       })
+    },
+    noData (context) {
+      context.commit('noMoreData')
     }
   }
 })

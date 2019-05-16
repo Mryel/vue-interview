@@ -5,8 +5,24 @@
       <router-link to="/test">Test</router-link>
     </div>
     <router-view/>
+    <!-- <div class="noData" v-if="noData">
+      <p>没有更多数据了</p>
+    </div> -->
   </div>
 </template>
+<script>
+export default {
+  name: 'app',
+  // data () {
+  //   return {
+  //     noData: false
+  //   }
+  // },
+  created () {
+    this.$store.dispatch('getDataCall', { startIndex: 0, count: 10 })
+  }
+}
+</script>
 
 <style lang="less">
 #app {
